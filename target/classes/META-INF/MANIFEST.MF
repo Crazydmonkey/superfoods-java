@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: smart-home
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: zhangjl
+Implementation-Vendor-Id: com.briup
+Build-Jdk: 1.8.0_74
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/smart-home
+Created-By: Maven Integration for Eclipse
+

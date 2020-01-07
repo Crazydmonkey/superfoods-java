@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.smart.mapper.SearchMapper">
+	<resultMap id="BaseResultMap"
+		type="com.briup.smart.bean.Search">
+		<id column="ID" jdbcType="NUMERIC" property="id" />
+		<result column="KEYWORD" jdbcType="VARCHAR" property="keyword" />
+		<result column="CUSTOMER_ID" jdbcType="NUMERIC"
+			property="customerId" />
+	</resultMap>
+	<delete id="deleteByCustomerId" parameterType="java.lang.Long">
+		delete from SEARCH
+		where CUSTOMER_ID = #{customerId,jdbcType=NUMERIC}
+	</delete>
+	<insert id="insert" parameterType="com.briup.smart.bean.Search">
+		insert into SEARCH (ID,
+		KEYWORD, CUSTOMER_ID
+		)
+		values (search_id_seq.nextval,
+		#{keyword,jdbcType=VARCHAR},
+		#{customerId,jdbcType=NUMERIC}
+		)
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterType="com.briup.smart.bean.Search">
+		update SEARCH
+		set KEYWORD = #{keyword,jdbcType=VARCHAR},
+		CUSTOMER_ID = #{customerId,jdbcType=NUMERIC}
+		where ID =
+		#{id,jdbcType=NUMERIC}
+	</update>
+	<select id="selectByCustomerId" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select *
+		from SEARCH
+		where CUSTOMER_ID =
+		#{customerId,jdbcType=NUMERIC}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select ID, KEYWORD, CUSTOMER_ID
+		from SEARCH
+	</select>
+	<delete id="deleteMinId" parameterType="java.lang.Long">
+		delete
+		from SEARCH
+		where ID
+		= (select min(id) from search)
+	</delete>
+	<select id="selectNumberOfId" resultType="java.lang.Integer">
+		select count(*) from
+		SEARCH
+		where CUSTOMER_ID = #{customerId,jdbcType=NUMERIC}
+	</select>
+</mapper>

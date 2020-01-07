@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<style type="text/css">
+		*{
+			text-align: center;
+			font-size: 30px;
+		}
+		#addDelivery{
+			padding: 5px;
+			text-align: center;
+			margin-right:500px;
+			float: right;
+			padding: 20px;
+		}
+		tr,td,th{
+			border:1px solid black;
+			padding: 10px;
+			height: 20px;
+		}
+		table{
+			margin-top: 200px;
+		}
+		div{
+			height: 800px;
+		}
+		header,footer{
+			height: 150px;;
+			padding-top: 40px;
+		}
+
+	</style>
+	<script type="text/javascript">
+		function deletemsg(){
+          var msg=confirm("你确定要删除该骑手信息吗？");
+		}
+
+	</script>
+</head>
+	<header><font style="font-size: 60px;">骑手信息</font></header>
+	<div>
+		<input type="button" id="addDelivery" value="添加骑手" onClick="window.location.href='添加骑手.html'"><br/>
+		<table cellspacing="0" align="center" width="80%">
+			<tr>
+				<th>序号</th>
+				<th>姓名</th>
+				<th>电话</th>
+				<th>操作</th>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>张三</td>
+				<td>11111111111</td>
+				<td><input type="button" id="update" value="修改信息" onClick="window.location.href='修改骑手.html'">
+					<input type="button" id="delete" value="删除信息" onClick="deletemsg()">
+				</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>李四</td>
+				<td>22222222222</td>
+				<td><input type="button" id="update" value="修改信息" onClick="window.location.href='修改骑手.html'">
+					<input type="button" id="delete" value="删除信息" onClick="deletemsg()"></td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>李四</td>
+					<td>22222222222</td>
+					<td><input type="button" id="update" value="修改信息" onClick="window.location.href='修改骑手.html'">
+						<input type="button" id="delete" value="删除信息" onClick="deletemsg()"></td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>李四</td>
+						<td>22222222222</td>
+						<td><input type="button" id="update" value="修改信息" onClick="window.location.href='修改骑手.html'">
+							<input type="button" id="delete" value="删除信息" onClick="deletemsg()"></td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>李四</td>
+							<td>22222222222</td>
+							<td><input type="button" id="update" value="修改信息" onClick="window.location.href='修改骑手.html'">
+								<input type="button" id="delete" value="删除信息" onClick="deletemsg()"></td>
+							</tr>
+						</table>
+					</div>
+					<footer>
+						<div class="fenye">
+							<nav aria-label="Page navigation">
+								<ul class="pagination">
+									<li>
+										<a href="#" aria-label="Previous">
+											<span aria-hidden="true">上一页</span>
+										</a>
+									</li>
+									<li class="active"><a href="#">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li>
+										<a href="#" aria-label="Next">
+											<span aria-hidden="true">下一页</span>
+										</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
+
+					</footer>
+
+				</html>	

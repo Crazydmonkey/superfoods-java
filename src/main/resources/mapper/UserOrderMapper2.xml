@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.smart.mapper.UserOrderMapper2">
+  <resultMap id="BaseResultMap" type="com.briup.smart.bean.UserOrder">
+    <id column="ID" jdbcType="NUMERIC" property="id" />
+    <result column="ORDER_TIME" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="AMOUNT" jdbcType="NUMERIC" property="amount" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="DELIVERY_TIME" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="METHODS_OF_PAYMENT" jdbcType="VARCHAR" property="methodsOfPayment" />
+    <result column="NOTES" jdbcType="VARCHAR" property="notes" />
+    <result column="IS_CANCELED" jdbcType="VARCHAR" property="isCanceled" />
+    <result column="CANCEL_REASON" jdbcType="VARCHAR" property="cancelReason" />
+    <result column="DELIVERYMAN_ID" jdbcType="NUMERIC" property="deliverymanId" />
+    <result column="CUSTOMER_ID" jdbcType="NUMERIC" property="customerId" />
+ 	<result column="DELETED" jdbcType="NUMERIC" property="deleted" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from USER_ORDER
+    where ID = #{id,jdbcType=NUMERIC}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.briup.smart.bean.UserOrder">
+    insert into USER_ORDER (ID, ORDER_TIME, AMOUNT, 
+      STATUS, DELIVERY_TIME, METHODS_OF_PAYMENT, 
+      NOTES, IS_CANCELED, CANCEL_REASON, 
+      DELIVERYMAN_ID, CUSTOMER_ID,deleted)
+    values (#{id,jdbcType=NUMERIC}, #{orderTime,jdbcType=TIMESTAMP}, #{amount,jdbcType=NUMERIC}, 
+      #{status,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=TIMESTAMP}, #{methodsOfPayment,jdbcType=VARCHAR}, 
+      #{notes,jdbcType=VARCHAR}, #{isCanceled,jdbcType=VARCHAR}, #{cancelReason,jdbcType=VARCHAR}, 
+      #{deliverymanId,jdbcType=NUMERIC}, #{customerId,jdbcType=NUMERIC}, #{deleted,jdbcType=NUMERIC})
+  </insert>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.briup.smart.bean.UserOrder">
+    update USER_ORDER
+    set ORDER_TIME = #{orderTime,jdbcType=TIMESTAMP},
+      AMOUNT = #{amount,jdbcType=NUMERIC},
+      STATUS = #{status,jdbcType=VARCHAR},
+      DELIVERY_TIME = #{deliveryTime,jdbcType=TIMESTAMP},
+      METHODS_OF_PAYMENT = #{methodsOfPayment,jdbcType=VARCHAR},
+      NOTES = #{notes,jdbcType=VARCHAR},
+      IS_CANCELED = #{isCanceled,jdbcType=VARCHAR},
+      CANCEL_REASON = #{cancelReason,jdbcType=VARCHAR},
+      DELIVERYMAN_ID = #{deliverymanId,jdbcType=NUMERIC},
+      CUSTOMER_ID = #{customerId,jdbcType=NUMERIC},
+      deleted=#{deleted,jdbcType=NUMERIC}
+    where ID = #{id,jdbcType=NUMERIC}
+  </update>
+  
+  
+  <update id="updateStatus" parameterType="com.briup.smart.bean.UserOrder">
+    update USER_ORDER
+    set ORDER_TIME = #{orderTime,jdbcType=TIMESTAMP},
+      AMOUNT = #{amount,jdbcType=NUMERIC},
+      STATUS = #{status,jdbcType=VARCHAR},
+      DELIVERY_TIME = #{deliveryTime,jdbcType=TIMESTAMP},
+      METHODS_OF_PAYMENT = #{methodsOfPayment,jdbcType=VARCHAR},
+      NOTES = #{notes,jdbcType=VARCHAR},
+      IS_CANCELED = #{isCanceled,jdbcType=VARCHAR},
+      CANCEL_REASON = #{cancelReason,jdbcType=VARCHAR},
+      DELIVERYMAN_ID = #{deliverymanId,jdbcType=NUMERIC},
+      CUSTOMER_ID = #{customerId,jdbcType=NUMERIC},
+      deleted=#{deleted,jdbcType=NUMERIC}
+    where ID = #{id,jdbcType=NUMERIC}
+  </update>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, ORDER_TIME, AMOUNT, STATUS, DELIVERY_TIME, METHODS_OF_PAYMENT, NOTES, 
+    IS_CANCELED, CANCEL_REASON, DELIVERYMAN_ID, CUSTOMER_ID,deleted
+    from USER_ORDER
+    where ID = #{id,jdbcType=NUMERIC}
+  </select>
+  
+  
+  <!-- 按状态检索 -->
+  <select id="selectOrderStatus" resultMap="BaseResultMap">
+    select ID, ORDER_TIME, AMOUNT, STATUS, DELIVERY_TIME, METHODS_OF_PAYMENT, NOTES, 
+    IS_CANCELED, CANCEL_REASON, DELIVERYMAN_ID, CUSTOMER_ID,deleted
+    from USER_ORDER
+    where STATUS = #{status,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 按条件检索 -->
+  <select id="selectOrder" parameterType="com.briup.smart.bean.Option" resultMap="BaseResultMap">
+    select ID, ORDER_TIME, 
+    AMOUNT, STATUS, DELIVERY_TIME, METHODS_OF_PAYMENT, NOTES, 
+    IS_CANCELED, CANCEL_REASON, DELIVERYMAN_ID, CUSTOMER_ID,deleted
+    from USER_ORDER
+    <trim prefix="where" prefixOverrides="and|or">
+    	<if test="orderId!=null">
+    		and id=#{orderId}
+    	</if>
+    	<if test="isCanceled!=null">
+    		and IS_CANCELED=#{isCanceled}
+    	</if>
+    	<if test="customerId!=null">
+    		and CUSTOMER_ID=#{customerId}
+    	</if>
+    	<if test="deleted!=null">
+    		and deleted=#{deleted}
+    	</if>
+    	<if test="finish!=null">
+    		and STATUS not in('已取消','已完成')
+    	</if>
+    	<if test="status!=null">
+    		and STATUS=#{status}
+    	</if>
+    	<if test="deliverymanId!=null">
+    		and DELIVERYMAN_ID=#{deliverymanId}
+    	</if>
+    	<if test="beforeDate!=null">
+    		and DELIVERY_TIME between TO_DATE(#{beforeDate},'yyyy-MM-dd HH24:mi:ss') 
+    				and TO_DATE(#{afterDate},'yyyy-MM-dd HH24:mi:ss')
+    	</if>
+    </trim>  
+  </select>
+  
+  <!-- 检索申请退单-->
+  <select id="selectChargeback" parameterType="com.briup.smart.bean.Option" resultMap="BaseResultMap">
+    select ID, ORDER_TIME, 
+    AMOUNT, STATUS, DELIVERY_TIME, METHODS_OF_PAYMENT, NOTES, 
+    IS_CANCELED, CANCEL_REASON, DELIVERYMAN_ID, CUSTOMER_ID,deleted
+    from USER_ORDER
+    where STATUS!=#{status} and IS_CANCELED=#{isCanceled}
+    	 
+  </select>
+  
+  
+  <!-- 修改状态 -->
+  <update id="updateByStatus">
+    update USER_ORDER
+    set STATUS = #{status,jdbcType=VARCHAR} 
+    where ID = #{orderId,jdbcType=NUMERIC}
+  </update>
+  
+  <!-- 添加骑手 -->
+  <update id="updateByDeliveryman">
+    update USER_ORDER
+    set DELIVERYMAN_ID = #{deliverymanId,jdbcType=NUMERIC} 
+    where ID = #{orderId,jdbcType=NUMERIC}
+  </update>
+  
+</mapper>

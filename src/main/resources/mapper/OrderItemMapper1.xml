@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.smart.mapper.OrderItemMapper1">
+  <resultMap id="BaseResultMap" type="com.briup.smart.bean.OrderItem">
+    <id column="ID" jdbcType="NUMERIC" property="id" />
+    <result column="GOODS_ID" jdbcType="NUMERIC" property="goodsId" />
+    <result column="ORDER_ID" jdbcType="NUMERIC" property="orderId" />
+    <result column="QUANTITY" jdbcType="DECIMAL" property="quantity" />
+    <result column="AMOUNT" jdbcType="DOUBLE" property="amount" />
+    <result column="CUSTOMER_ID" jdbcType="NUMERIC" property="customerId" />
+  </resultMap>
+  
+  <insert id="insert" parameterType="com.briup.smart.bean.OrderItem">
+    <selectKey keyProperty="ID" resultType="long" order="BEFORE">
+    	select order_item_id_seq.nextval from daul
+    </selectKey>
+    insert into ORDER_ITEM (ID, GOODS_ID, ORDER_ID, 
+      QUANTITY, AMOUNT, CUSTOMER_ID)
+    values (#{id,jdbcType=NUMERIC}, #{goodsId,jdbcType=NUMERIC}, #{orderId,jdbcType=NUMERIC}, 
+      #{quantity,jdbcType=DECIMAL}, #{amount,jdbcType=DOUBLE}, #{customerId,jdbcType=NUMERIC})
+  </insert>
+ 
+</mapper>

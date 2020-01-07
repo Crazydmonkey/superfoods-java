@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.smart.mapper.CollectionMapper">
+  <resultMap id="BaseResultMap" type="com.briup.smart.bean.Collection">
+    <id column="ID" jdbcType="NUMERIC" property="id" />
+    <result column="GOODS_ID" jdbcType="NUMERIC" property="goodsId" />
+    <result column="CUSTOMER_ID" jdbcType="NUMERIC" property="customerId" />
+  </resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from COLLECTION
+		where customer_id = #{customerId,jdbcType=NUMERIC} and goods_id
+		=#{goodsId,jdbcType=NUMERIC}
+	</delete>
+
+	<insert id="insert"
+		parameterType="com.briup.smart.bean.Collection">
+		insert into COLLECTION (ID, GOODS_ID, CUSTOMER_ID)
+		values (collection_id_seq.nextval, #{goodsId,jdbcType=NUMERIC},
+		#{customerId,jdbcType=NUMERIC})
+	</insert>
+
+	<update id="updateByPrimaryKey"
+		parameterType="com.briup.smart.bean.Collection">
+		update COLLECTION
+		set GOODS_ID = #{goodsId,jdbcType=NUMERIC},
+		CUSTOMER_ID = #{customerId,jdbcType=NUMERIC}
+		where ID = #{id,jdbcType=NUMERIC}
+	</update>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select ID, GOODS_ID, CUSTOMER_ID
+		from COLLECTION
+		where ID = #{id,jdbcType=NUMERIC}
+	</select>
+	<select id="selectByCustomerId" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select ID, GOODS_ID, CUSTOMER_ID
+		from COLLECTION
+		where CUSTOMER_ID = #{customerId,jdbcType=NUMERIC}
+	</select>
+	<select id="selectByCustomerIdAndGoodsId"
+		parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select *
+		from COLLECTION
+		where CUSTOMER_ID = #{customerId,jdbcType=NUMERIC} and GOODS_ID =
+		#{goodsId,jdbcType=NUMERIC}
+	</select>
+</mapper>

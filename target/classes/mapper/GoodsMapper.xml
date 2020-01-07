@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.smart.mapper.GoodsMapper">
+	<resultMap id="BaseResultMap"
+		type="com.briup.smart.bean.Goods">
+		<id column="ID" jdbcType="NUMERIC" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="PICTURE" jdbcType="VARCHAR" property="picture" />
+		<result column="PRICE" jdbcType="DOUBLE" property="price" />
+		<result column="QUANTITY" jdbcType="DECIMAL"
+			property="quantity" />
+		<result column="DESCRIPTION" jdbcType="VARCHAR"
+			property="description" />
+		<result column="CATEGORY_ID" jdbcType="NUMERIC"
+			property="categoryId" />
+		<result column="COLLECTION_NUMBER" jdbcType="NUMERIC" property="collectionNumber" />
+		<result column="COST" jdbcType="DOUBLE" property="cost" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from GOODS
+		where ID = #{id,jdbcType=NUMERIC}
+	</delete>
+	<insert id="insert" parameterType="com.briup.smart.bean.Goods">
+		insert into GOODS (ID, NAME,
+		PICTURE,
+		PRICE, QUANTITY, DESCRIPTION,
+		CATEGORY_ID, COLLECTION_NUMBER, COST)
+		values
+		(goods_id_seq.nextval, #{name,jdbcType=VARCHAR},
+		#{picture,jdbcType=VARCHAR},
+		#{price,jdbcType=DOUBLE},
+		#{quantity,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR},
+		#{categoryId,jdbcType=NUMERIC}, #{collectionNumber,jdbcType=NUMERIC}, 
+		#{cost,jdbcType=DOUBLE})
+	</insert>
+	<update id="updateByPrimaryKey"
+		parameterType="com.briup.smart.bean.Goods">
+		update GOODS
+		set NAME = #{name,jdbcType=VARCHAR},
+		PICTURE
+		= #{picture,jdbcType=VARCHAR},
+		PRICE = #{price,jdbcType=DOUBLE},
+		QUANTITY = #{quantity,jdbcType=DECIMAL},
+		DESCRIPTION =
+		#{description,jdbcType=VARCHAR},
+		CATEGORY_ID =
+		#{categoryId,jdbcType=NUMERIC},
+		COLLECTION_NUMBER = #{collectionNumber,jdbcType=NUMERIC},
+		COST = #{cost,jdbcType=DOUBLE}
+		where ID = #{id,jdbcType=NUMERIC}
+	</update>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select ID, NAME, PICTURE, PRICE, QUANTITY, DESCRIPTION,
+		CATEGORY_ID, COLLECTION_NUMBER,COST
+		from GOODS
+		where ID = #{id,jdbcType=NUMERIC}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select ID, NAME, PICTURE,
+		PRICE, QUANTITY, DESCRIPTION, CATEGORY_ID, COLLECTION_NUMBER,COST
+		from GOODS
+	</select>
+	<select id="selectByNameFood" resultMap="BaseResultMap">
+		select *
+		from GOODS
+		where
+		goods.category_id in(select id from goods_category where region='food')
+		and goods.name like concat(concat('%',#{name}),'%')
+	</select>
+		<select id="selectByNameShopping" resultMap="BaseResultMap">
+		select *
+		from GOODS
+		where
+		goods.category_id in(select id from goods_category where region='shopping')
+		and goods.name like concat(concat('%',#{name}),'%')
+	</select>
+	<select id="selectGoodsByRegionShopping"
+		parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from goods
+		where
+		goods.category_id=
+		(select id from goods_category where
+		region='shopping')
+	</select>
+	<select id="selectGoodsByRegionFood"
+		parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from goods
+		where
+		goods.category_id=
+		(select id from goods_category
+		where region='food')
+	</select>
+	<select id="selectGoodsByCategoryId"
+		parameterType="java.lang.Long" resultMap="BaseResultMap">
+	    select *
+		from goods
+		where category_id=#{categoryId,jdbcType=NUMERIC}
+	</select>
+	<select id="selectByName" resultMap="BaseResultMap">
+		select ID, NAME, PICTURE,
+		PRICE, QUANTITY, DESCRIPTION, CATEGORY_ID, COLLECTION_NUMBER,COST
+		from GOODS
+		where
+		name like concat(concat('%',#{name}),'%')
+	</select>
+	<select id="selectByNameExactly" resultMap="BaseResultMap">
+		select ID, NAME, PICTURE,
+		PRICE, QUANTITY, DESCRIPTION, CATEGORY_ID, COLLECTION_NUMBER,COST
+		from GOODS
+		where
+		name = #{name, jdbcType=VARCHAR}
+	</select>
+	<select id="selectGoodsByRegion" resultMap="BaseResultMap">
+		select ID, NAME, PICTURE,
+		PRICE, QUANTITY, DESCRIPTION, CATEGORY_ID, COLLECTION_NUMBER,COST
+		from GOODS
+		where category_id in(select id from goods_category where region = #{region, jdbcType=VARCHAR})
+	</select>
+	<update id="increaseCollectionNumber" parameterType="java.lang.Long">
+		update goods
+		set collection_number = collection_number + 1 
+		where id = #{goodsId,jdbcType=NUMERIC}
+		
+	</update>
+	<update id="reduceCollectionNumber" parameterType="java.lang.Long">
+		update goods
+		set collection_number = collection_number - 1
+		where id = #{goodsId,jdbcType=NUMERIC}
+	</update>
+</mapper>

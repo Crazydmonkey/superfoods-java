@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.smart.mapper.OrderItemMapper2">
+  <resultMap id="BaseResultMap" type="com.briup.smart.bean.OrderItem">
+    <id column="ID" jdbcType="NUMERIC" property="id" />
+    <result column="GOODS_ID" jdbcType="NUMERIC" property="goodsId" />
+    <result column="ORDER_ID" jdbcType="NUMERIC" property="orderId" />
+    <result column="QUANTITY" jdbcType="DECIMAL" property="quantity" />
+    <result column="AMOUNT" jdbcType="DOUBLE" property="amount" />
+    <result column="CUSTOMER_ID" jdbcType="NUMERIC" property="customerId" />
+  </resultMap>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ORDER_ITEM
+    where ID = #{id,jdbcType=NUMERIC}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.briup.smart.bean.OrderItem">
+    insert into ORDER_ITEM (ID, GOODS_ID, ORDER_ID, 
+      QUANTITY, AMOUNT, CUSTOMER_ID)
+    values (#{id,jdbcType=NUMERIC}, #{goodsId,jdbcType=NUMERIC}, #{orderId,jdbcType=NUMERIC}, 
+      #{quantity,jdbcType=DECIMAL}, #{amount,jdbcType=DOUBLE}, #{customerId,jdbcType=NUMERIC})
+  </insert>
+  
+  
+  <update id="updateByPrimaryKey" parameterType="com.briup.smart.bean.OrderItem">
+    update ORDER_ITEM
+    set GOODS_ID = #{goodsId,jdbcType=NUMERIC},
+      ORDER_ID = #{orderId,jdbcType=NUMERIC},
+      QUANTITY = #{quantity,jdbcType=DECIMAL},
+      AMOUNT = #{amount,jdbcType=DOUBLE},
+      CUSTOMER_ID = #{customerId,jdbcType=NUMERIC}
+    where ID = #{id,jdbcType=NUMERIC}
+  </update>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, GOODS_ID, ORDER_ID, QUANTITY, AMOUNT, CUSTOMER_ID 
+    from ORDER_ITEM
+    where ID = #{id,jdbcType=NUMERIC}
+  </select>
+  
+  <!-- 获得该用户的全部订单 -->
+  <select id="selectAll" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, GOODS_ID, ORDER_ID, QUANTITY, AMOUNT, CUSTOMER_ID
+    from ORDER_ITEM
+    where ORDER_ID = #{orderId,jdbcType=NUMERIC}
+  </select>
+  
+  <!-- 添加商品到购物车 -->
+  <insert id="insertShopingCar" parameterType="com.briup.smart.bean.OrderItem">
+    insert into ORDER_ITEM (ID, GOODS_ID,
+      QUANTITY, AMOUNT, CUSTOMER_ID)
+    values (order_item_id_seq.nextval, #{goodsId,jdbcType=NUMERIC},
+      #{quantity,jdbcType=DECIMAL}, #{amount,jdbcType=DOUBLE}, #{customerId,jdbcType=NUMERIC})
+  </insert>
+  
+  
+   <!-- 查看购物车中是否有该商品 -->
+  <select id="selectOrderItem" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, GOODS_ID, ORDER_ID, QUANTITY, AMOUNT, CUSTOMER_ID
+    from ORDER_ITEM
+    where ORDER_ID is null and GOODS_ID = #{goodsId,jdbcType=NUMERIC} and CUSTOMER_ID = #{customerId,jdbcType=NUMERIC}
+  </select>
+  
+  <!-- 清空购物车 -->
+  <delete id="deleteAll" parameterType="java.lang.Long">
+    delete from ORDER_ITEM
+    where ORDER_ID is null and CUSTOMER_ID= #{customerId,jdbcType=NUMERIC}
+  </delete>
+  
+  
+  <!-- 删除购物车商品 -->
+  <delete id="deleteOrdetItem">
+    delete from ORDER_ITEM
+    where ORDER_ID is null and GOODS_ID=#{goodsId,jdbcType=NUMERIC} and CUSTOMER_ID= #{customerId,jdbcType=NUMERIC}
+  </delete>
+  
+  <!-- 查询购物车全部订单项 -->
+  <select id="selectAllShoppingCar" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, GOODS_ID, ORDER_ID, QUANTITY, AMOUNT, CUSTOMER_ID 
+    from ORDER_ITEM
+    where ORDER_ID is null and CUSTOMER_ID= #{customerId,jdbcType=NUMERIC}
+  </select>
+  
+  
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

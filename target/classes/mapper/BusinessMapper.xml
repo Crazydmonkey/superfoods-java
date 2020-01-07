@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace ="com.briup.smart.mapper.BusinessMapper">
+  <resultMap id="BaseResultMap" type="com.briup.smart.bean.Business">
+    <id column="ID" jdbcType="NUMERIC" property="id" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+  	<result column="HEAD_PORTRAIT" jdbcType="VARCHAR" property="headPortrait" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from BUSINESS
+    where ID = #{id,jdbcType=NUMERIC}
+  </delete>
+  <insert id="insert" parameterType="com.briup.smart.bean.Business">
+    insert into BUSINESS (ID, ACCOUNT, PASSWORD,HEAD_PORTRAIT) 
+    values (business_id_seq.nextval, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{headPortrait,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.briup.smart.bean.Business">
+    update BUSINESS
+    set ACCOUNT = #{account,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+	  HEAD_PORTRAIT = #{headPortrait,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=NUMERIC}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, ACCOUNT, PASSWORD,HEAD_PORTRAIT
+    from BUSINESS
+    where ID = #{id,jdbcType=NUMERIC}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select ID, ACCOUNT, PASSWORD,HEAD_PORTRAIT
+    from BUSINESS
+  </select>
+  <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select ID,ACCOUNT,PASSWORD,HEAD_PORTRAIT
+  from BUSINESS  
+  where ACCOUNT = #{account,jdbcType=VARCHAR}
+  </select>
+</mapper>

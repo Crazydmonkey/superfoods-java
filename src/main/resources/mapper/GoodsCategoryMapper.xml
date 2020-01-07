@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.smart.mapper.GoodsCategoryMapper">
+	<resultMap
+		id="BaseResultMap"
+		type="com.briup.smart.bean.GoodsCategory">
+		<id
+			column="ID"
+			jdbcType="NUMERIC"
+			property="id" />
+		<result
+			column="NAME"
+			jdbcType="VARCHAR"
+			property="name" />
+		<result
+			column="REGION"
+			jdbcType="VARCHAR"
+			property="region" />
+	</resultMap>
+	<delete
+		id="deleteByPrimaryKey"
+		parameterType="java.lang.Long">
+		delete from GOODS_CATEGORY
+		where ID =
+		#{id,jdbcType=NUMERIC}
+	</delete>
+
+	<insert
+		id="insert"
+		parameterType="com.briup.smart.bean.GoodsCategory">
+		insert into GOODS_CATEGORY (ID, NAME, REGION)
+		values
+		(goods_category_id_seq.nextval, #{name,jdbcType=VARCHAR},
+		#{region,jdbcType=VARCHAR})
+	</insert>
+
+	<update
+		id="updateByPrimaryKey"
+		parameterType="com.briup.smart.bean.GoodsCategory">
+		update GOODS_CATEGORY
+		set NAME = #{name,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=NUMERIC}
+	</update>
+
+	<select
+		id="selectByPrimaryKey"
+		parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select ID, NAME, REGION
+		from GOODS_CATEGORY
+		where ID =
+		#{id,jdbcType=NUMERIC}
+	</select>
+
+	<select
+		id="selectAll"
+		resultMap="BaseResultMap">
+		select ID, NAME, REGION
+		from GOODS_CATEGORY
+	</select>
+	<select
+		id="selectGoodsCategoryByRegionShopping"
+		parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select *
+		from GOODS_CATEGORY
+		<where>
+			<if test="region!=null and region=='shopping'">and region='shopping'</if>
+		</where>
+	</select>
+	<select
+		id="selectGoodsCategoryByRegionFood"
+		parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select *
+		from GOODS_CATEGORY
+		<where>
+			<if test="region!=null and region=='food'">and region='food'</if>
+		</where>
+	</select>
+	<select
+		id="isInShopping" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select * from GOODS_CATEGORY
+		where REGION='shopping' and id=(
+		select category_id from GOODS
+		where id=#{id,jdbcType=NUMERIC})
+	</select>
+	<!-- 根据类别名称检索 -->
+	<select
+		id="selectByName" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from GOODS_CATEGORY
+		where NAME=#{name}
+	</select>
+</mapper>

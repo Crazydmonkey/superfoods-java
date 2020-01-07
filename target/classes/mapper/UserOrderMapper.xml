@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.smart.mapper.UserOrderMapper">
+  <resultMap id="BaseResultMap" type="com.briup.smart.bean.UserOrder">
+    <id column="ID" jdbcType="NUMERIC" property="id" />
+    <result column="ORDER_TIME" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="AMOUNT" jdbcType="DOUBLE" property="amount" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="DELIVERY_TIME" jdbcType="TIMESTAMP" property="deliveryTime" />
+    <result column="METHODS_OF_PAYMENT" jdbcType="VARCHAR" property="methodsOfPayment" />
+    <result column="NOTES" jdbcType="VARCHAR" property="notes" />
+    <result column="IS_CANCELED" jdbcType="VARCHAR" property="isCanceled" />
+    <result column="CANCEL_REASON" jdbcType="VARCHAR" property="cancelReason" />
+    <result column="DELIVERYMAN_ID" jdbcType="NUMERIC" property="deliverymanId" />
+    <result column="CUSTOMER_ID" jdbcType="NUMERIC" property="customerId" />
+  	<result column="DELETED" jdbcType="NUMERIC" property="deleted" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from USER_ORDER
+    where ID = #{id,jdbcType=NUMERIC}
+  </delete>
+  <insert id="insert" parameterType="com.briup.smart.bean.UserOrder">
+    insert into USER_ORDER (ID, ORDER_TIME, AMOUNT, 
+      STATUS, DELIVERY_TIME, METHODS_OF_PAYMENT, 
+      NOTES, IS_CANCELED, CANCEL_REASON, 
+      DELIVERYMAN_ID, CUSTOMER_ID, DELETED)
+    values (#{id,jdbcType=NUMERIC}, #{orderTime,jdbcType=TIMESTAMP}, #{amount,jdbcType=DOUBLE}, 
+      #{status,jdbcType=VARCHAR}, #{deliveryTime,jdbcType=TIMESTAMP}, #{methodsOfPayment,jdbcType=VARCHAR}, 
+      #{notes,jdbcType=VARCHAR}, #{isCanceled,jdbcType=VARCHAR}, #{cancelReason,jdbcType=VARCHAR}, 
+      #{deliverymanId,jdbcType=NUMERIC}, #{customerId,jdbcType=NUMERIC}, #{deleted,jdbcType=NUMERIC})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.briup.smart.bean.UserOrder">
+    update USER_ORDER
+    set ORDER_TIME = #{orderTime,jdbcType=TIMESTAMP},
+      AMOUNT = #{amount,jdbcType=DOUBLE},
+      STATUS = #{status,jdbcType=VARCHAR},
+      DELIVERY_TIME = #{deliveryTime,jdbcType=TIMESTAMP},
+      METHODS_OF_PAYMENT = #{methodsOfPayment,jdbcType=VARCHAR},
+      NOTES = #{notes,jdbcType=VARCHAR},
+      IS_CANCELED = #{isCanceled,jdbcType=VARCHAR},
+      CANCEL_REASON = #{cancelReason,jdbcType=VARCHAR},
+      DELIVERYMAN_ID = #{deliverymanId,jdbcType=NUMERIC},
+      CUSTOMER_ID = #{customerId,jdbcType=NUMERIC},
+      deleted=#{deleted,jdbcType=NUMERIC}
+    where ID = #{id,jdbcType=NUMERIC}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select ID, ORDER_TIME, AMOUNT, STATUS, DELIVERY_TIME, METHODS_OF_PAYMENT, NOTES, 
+    IS_CANCELED, CANCEL_REASON, DELIVERYMAN_ID, CUSTOMER_ID,deleted
+    from USER_ORDER
+    where ID = #{id,jdbcType=NUMERIC}
+  </select>
+</mapper>
